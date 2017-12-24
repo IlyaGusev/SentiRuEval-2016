@@ -2,6 +2,7 @@ import os
 import pickle
 from collections import Counter
 
+
 class Vocabulary(object):
     def __init__(self, dump_filename):
         self.dump_filename = dump_filename
