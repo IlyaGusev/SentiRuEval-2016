@@ -10,7 +10,7 @@ def shrink_w2v(input_filename, output_filename, vocab_filename):
     with open(input_filename, "r", encoding='utf-8') as r:
         line = next(r)
         dimension = int(line.strip().split()[1])
-        vocabulary_embeddings = [np.zeros(dimension) for _ in vocabulary.index_to_word]
+        vocabulary_embeddings = dict()
         all_count = 0
         found_count = 0
         words = set(vocabulary.word_to_index.keys())
@@ -33,8 +33,9 @@ def shrink_w2v(input_filename, output_filename, vocab_filename):
             except StopIteration:
                 break
     with open(output_filename, "w", encoding='utf-8') as w:
-        w.write(str(vocabulary.size()) + " " + str(dimension) + "\n")
+        w.write(str(len(vocabulary_embeddings.items())) + " " + str(dimension) + "\n")
         for i, word in enumerate(vocabulary.index_to_word):
-            w.write(word + " " + " ".join([str(i) for i in list(vocabulary_embeddings[i])]) + "\n")
+            if i in vocabulary_embeddings:
+                w.write(word + " " + " ".join([str(i) for i in list(vocabulary_embeddings[i])]) + "\n")
 
-shrink_w2v(FAT_FILE, "emb.txt", "vocab.pickle")
+shrink_w2v(FAT_FILE, "pickles/banks_w2v.txt", "pickles/banks_vocab.pickle")
